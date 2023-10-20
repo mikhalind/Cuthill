@@ -1,0 +1,46 @@
+﻿<Window x:Class="Cuthill.InputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cuthill"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Ввод матрицы" Height="247" Width="470">
+    <DockPanel LastChildFill="True">
+        <StatusBar Name="StatusBar" DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <Image x:Name="BarIcon" Source="/Icons/cross.png" Height="17"
+                       Margin="1,0,0,-1"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock x:Name="BarText" Text="Матрица не введена"/>
+            </StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="70"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="InputBox" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Margin="10"
+                 TextChanged="InputBox_TextChanged" AcceptsReturn="True" FontFamily="Consolas" FontSize="16"/>
+            <Grid x:Name="DynamicGrid" 
+              Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Margin="10"/>
+            <Button x:Name="ButtonOK" Grid.Row="0" Grid.Column="2" Margin="10" Click="ButtonOK_Click">
+                <Image x:Name="ImageOK" Source="/Icons/okay.png" Margin="5"/>
+            </Button>
+            <Button x:Name="ButtonCancel" Grid.Row="1" Grid.Column="2" Margin="10" Click="ButtonCancel_Click">
+                <Image Source="/Icons/cross.png" Margin="5"/>
+            </Button>
+            <Button x:Name="ButtonInfo" Grid.Row="2" Grid.Column="2" Margin="10" Click="ButtonInfo_Click">
+                <Image Source="/Icons/faq.png" Margin="5"/>
+            </Button>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -1,0 +1,179 @@
+﻿<Window x:Class="Cuthill.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cuthill"
+        WindowStartupLocation="CenterScreen"
+        Width="588" Height="375" ResizeMode="NoResize"
+        mc:Ignorable="d" Background="#f0f0f0"
+        Title="Преобразование матрицы по методу Катхилла-МакКи"
+        Icon="Icons/matrix.png">
+
+    <!-- РЕСУРСЫ -->
+    <Window.Resources>
+        <SolidColorBrush x:Key="ButtonBackground" Color="#bababa"/>
+        <SolidColorBrush x:Key="Blue" Color="#3399ff"/>
+        <SolidColorBrush x:Key="MenuBar" Color="#f0f0f0"/>
+        <SolidColorBrush x:Key="StatusBar" Color="#f0f0f0"/>
+        <SolidColorBrush x:Key="BackgroundGray" Color="LightGray"/>
+        <Style TargetType="Menu">
+            <Setter Property="Background" Value="{StaticResource MenuBar}"/>
+        </Style>
+        <Style TargetType="MenuItem">
+            <Setter Property="FontFamily" Value="Calibri Light"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+
+        <!-- СТИЛЬ СТАТУСБАРА -->
+        <Style TargetType="StatusBar">
+            <Setter Property="Background" Value="{StaticResource StatusBar}"/>
+        </Style>
+
+        <!-- СТИЛЬ ТЕКСТА -->
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="Calibri Light"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+
+        <!-- СТИЛЬ ТЕКСТБОКСА -->
+        <Style TargetType="TextBox">
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Blue}"/>
+        </Style>
+
+        <!-- СТИЛЬ КНОПКИ -->
+        <Style TargetType="Button">
+            <Style.Setters>
+                <Setter Property="Background" Value="{StaticResource ButtonBackground}"/>
+                <Setter Property="BorderBrush" Value="Gray"/>
+                <Setter Property="FontFamily" Value="Calibri Light"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="1">
+                                <ContentPresenter
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{StaticResource BackgroundGray}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource MenuBar}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Blue}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource Blue}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Blue}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <!-- РАЗМЕТКА ОКНА ПРОГРАММЫ -->
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top" Padding="3" Height="27">
+            <MenuItem Header="Файл">
+                <MenuItem x:Name="ItemOpen" Header="Открыть файл" Click="ButtonOpen_Click"/>
+                <MenuItem x:Name="ItemEnter" Header="Ввести вручную" Click="ItemEnter_Click"/>
+                <MenuItem x:Name="ItemGenerate" Header="Сгенерировать" Click="ItemGenerate_Click"/>
+                <Separator/>
+                <MenuItem x:Name="ItemSave" Header="Сохранить в файл" Click="ButtonSave_Click"/>
+                <Separator/>
+                <MenuItem x:Name="ItemExit" Header="Выход" Click="ItemExit_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Алгоритм">
+                <MenuItem x:Name="ItemGraphs" Header="Показать список компонент" Click="ItemGraphs_Click"/>
+                <MenuItem x:Name="ItemLog" Header="Показать лог" Click="ItemLog_Click"/>
+            </MenuItem>
+            <MenuItem Header="Справка">
+                <MenuItem x:Name="ItemHelp" Header="Открыть пояснительную записку" Click="ItemHelp_Click"/>
+                <Separator/>
+                <MenuItem x:Name="ItemAbout" Header="О программе" Click="ItemAbout_Click"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar Name="StatusBar" DockPanel.Dock="Bottom" Height="27">
+            <StatusBarItem>
+                <Image x:Name="BarIcon" Source="/Icons/cross.png" Height="17"
+                       Margin="1,0,0,-1"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock x:Name="BarText" Text="Файл не открыт"/>
+            </StatusBarItem>
+        </StatusBar>
+        <Grid Background="{StaticResource BackgroundGray}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="251"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="231"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="71"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="231"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="inputLabel"
+                           FontSize="18"
+                           Grid.Row="0" Grid.Column="1"
+                           VerticalAlignment="Bottom"
+                           Text="Исходная матрица"/>
+            <TextBlock x:Name="outputLabel"
+                           FontSize="18"
+                           Grid.Row="0" Grid.Column="5"
+                           VerticalAlignment="Bottom"
+                           Text="Новая матрица"/>
+            <Grid Grid.Row="1" Grid.Column="3" Margin="0,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button x:Name="ButtonOpen" Grid.Row="0" Click="ButtonOpen_Click">
+                    <Button.ToolTip>
+                        <TextBlock Text="Открыть файл"/>
+                    </Button.ToolTip>
+                    <Image Grid.Row="0" x:Name="ImageOpen" Source="/Icons/folder.png" Margin="9"/>
+                </Button>
+                <Button x:Name="ButtonStart" Grid.Row="2" Click="ButtonStart_Click">
+                    <Button.ToolTip>
+                        <TextBlock Text="Выполнить алгоритм"/>
+                    </Button.ToolTip>
+                    <Image x:Name="ImageStart" Source="/Icons/play.png" Margin="9"/>
+                </Button>
+                <Button x:Name="ButtonSave" Grid.Row="4" Click="ButtonSave_Click">
+                    <Button.ToolTip>
+                        <TextBlock Text="Сохранить результат"/>
+                    </Button.ToolTip>
+                    <Image x:Name="ImageSave" Source="/Icons/save-file.png" Margin="9"/>
+                </Button>
+            </Grid>
+            <Border x:Name="inputBorder" BorderBrush="Gray" BorderThickness="1"
+                     Grid.Row="1" Grid.Column="1" Margin="0,10">
+                <Grid Background="{StaticResource StatusBar}" x:Name="InputGrid"/>
+            </Border>
+            <Border x:Name="outputBorder" BorderBrush="Gray" BorderThickness="1"
+                     Grid.Row="1" Grid.Column="5" Margin="0,10">
+                <Grid Background="{StaticResource StatusBar}" x:Name="OutputGrid"/>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>
+
